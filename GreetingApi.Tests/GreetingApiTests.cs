@@ -7,6 +7,7 @@ using Xunit.Abstractions;
 using PactNet.Infrastructure.Outputters;
 using Microsoft.AspNetCore.Builder;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace GreetingApi.Tests;
 
@@ -24,7 +25,6 @@ public class GreetingApiTests : IClassFixture<GreetingApiFixture>
     [Fact]
     public void RunContractTests()
     {
-        var client = fixture.Client;
         var config = new PactVerifierConfig {
             Outputters = new[] {
                 new XUnitOutput(output)
@@ -33,7 +33,7 @@ public class GreetingApiTests : IClassFixture<GreetingApiFixture>
 
         var verifier = new PactVerifier(config);
         verifier
-            .ServiceProvider("Greeting API", client.BaseAddress)
+            .ServiceProvider("Greeting API", new Uri("http://localhost:5001"))
             .WithPactBrokerSource(new Uri("http://localhost:9292/"))
             .Verify();
     }
@@ -58,21 +58,16 @@ public class GreetingApiFixture : IAsyncDisposable
 {
     private WebApplication application;
 
-    public HttpClient Client { get; private set; }
-
     public GreetingApiFixture()
     {
         var builder = WebApplication.CreateBuilder(Array.Empty<string>());
         application = Program.BuildApplication(builder);
         application.RunAsync("http://localhost:5001");
-
-        Client = new HttpClient();
-        Client.BaseAddress = new Uri("http://localhost:5001");
+        Thread.Sleep(TimeSpan.FromSeconds(10)); // Handle this better!
     }
 
     public async ValueTask DisposeAsync()
     {
-        Client.Dispose();
         await application.DisposeAsync();
     }
 }
