@@ -14,9 +14,7 @@ public class GreetingApiConsumerTests
     
     public GreetingApiConsumerTests()
     {
-        var pact = Pact.V3("Test consumer", "Greeting API", new PactConfig() {
-
-        });
+        var pact = Pact.V3("Test consumer", "Greeting API", new PactConfig());
 
         this.pactBuilder = pact.WithHttpInteractions();
     }
