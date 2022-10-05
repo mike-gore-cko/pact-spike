@@ -31,3 +31,13 @@ services:
       PACT_BROKER_BASE_URL: 'http://localhost http://localhost:9292'
     ports:
       - "9292:9292"
+
+  greeting-api:
+    build: .
+    depends_on:
+      - pact-broker
+    ports:
+      - "5001:5001"
+    environment:
+      ASPNETCORE_URLS: http://+:5001
+    
