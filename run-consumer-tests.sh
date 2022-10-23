@@ -1,4 +1,4 @@
-dotnet test
+dotnet test Consumer.Tests
 
 export PACT_BROKER_BASE_URL="http://localhost:9292"
 export PACT_BROKER_USERNAME=""
@@ -14,4 +14,4 @@ docker run --rm \
     pactfoundation/pact-cli:latest \
     publish \
     ${PWD}/Consumer.Tests/pacts \
-    --consumer-app-version 1.0.0 \
+    --consumer-app-version 1.0.0
