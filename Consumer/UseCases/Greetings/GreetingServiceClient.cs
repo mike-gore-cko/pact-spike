@@ -5,13 +5,13 @@ namespace Consumer.UseCases.Greetings;
 
 public class GreetingServiceClient
 {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+    
     private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public GreetingServiceClient(HttpClient client, JsonSerializerOptions jsonSerializerOptions)
+    public GreetingServiceClient(HttpClient client)
     {
         _client = client;
-        _jsonSerializerOptions = jsonSerializerOptions;
     }
 
     public async Task<string> GetGreeting()
@@ -19,7 +19,7 @@ public class GreetingServiceClient
         var response = await _client.GetAsync("/greeting");
         if (response.IsSuccessStatusCode)
         {
-            var responseBody = await response.Content.ReadFromJsonAsync<GetGreetingResponse>(_jsonSerializerOptions);
+            var responseBody = await response.Content.ReadFromJsonAsync<GetGreetingResponse>(JsonSerializerOptions);
             return responseBody!.Greeting;
         }
 

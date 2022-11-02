@@ -2,15 +2,15 @@
 
 public class GreetingService
 {
-    private GreetingServiceClient client;
+    private readonly GreetingServiceClient _client;
 
     public GreetingService(GreetingServiceClient client)
     {
-        this.client = client;
+        _client = client;
     }
 
     public Task<string> GetGreeting()
     {
-        return client.GetGreeting();
+        return _client.GetGreeting();
     }
 }
