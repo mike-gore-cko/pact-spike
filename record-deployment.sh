@@ -5,10 +5,9 @@ export PACT_BROKER_PASSWORD=""
 
 version=1.0.0
 environment=production
-consumer=Consumer
+participant="Greeting API"
 
 # See https://docs.pact.io/pact_broker/can_i_deploy
-# Validate whether we can deploy the consumer to production
 docker run --rm \
     -w ${PWD} \
     -v ${PWD}:${PWD} \
@@ -18,7 +17,7 @@ docker run --rm \
     --network="host" \
     pactfoundation/pact-cli:latest \
     pact-broker \
-    can-i-deploy \
-    --pacticipant "$consumer" \
+    record-deployment \
+    --pacticipant "$participant" \
     --version "$version" \
-    --to-environment "$environment"
+    --environment "$environment"
