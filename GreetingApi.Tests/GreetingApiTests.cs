@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Xunit;
 using PactNet.Verifier;
 using Xunit.Abstractions;
@@ -22,12 +23,22 @@ public class GreetingApiTests
             Outputters = new[] {
                 new XUnitOutput(output)
             }
-        };        
+        };
 
+        // TODO: Tests would need to be provided the provider variables via env vars
+        var providerVersion = "1.0.0";
+        var providerBranch = "main";
+        
         var verifier = new PactVerifier(config);
         verifier
             .ServiceProvider("Greeting API", new Uri("http://localhost:5001"))
-            .WithPactBrokerSource(new Uri("http://localhost:9292/"))
+            .WithPactBrokerSource(new Uri("http://localhost:9292/"), options =>
+            {
+                // See https://docs.pact.io/pact_broker/advanced_topics/pending_pacts
+                options.EnablePending()
+                    .ConsumerVersionSelectors(new ConsumerVersionSelector { MainBranch = true })
+                    .PublishResults(providerVersion, publish => publish.ProviderBranch(providerBranch));
+            })
             .Verify();
     }
 }
