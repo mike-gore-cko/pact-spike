@@ -2,8 +2,8 @@
 
 var httpClient = new HttpClient
 {
-    BaseAddress = new Uri("http://localhost:5001"), 
-    DefaultRequestHeaders = { {"Accept", "application/json"} }
+    BaseAddress = new Uri("http://localhost:5001"),
+    DefaultRequestHeaders = { { "Accept", "application/json" } }
 };
 
 var greetingServiceClient = new GreetingServiceClient(httpClient);

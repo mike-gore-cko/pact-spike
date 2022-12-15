@@ -1,8 +1,10 @@
 using System;
-using Xunit;
-using PactNet.Verifier;
-using Xunit.Abstractions;
+
 using PactNet.Infrastructure.Outputters;
+using PactNet.Verifier;
+
+using Xunit;
+using Xunit.Abstractions;
 
 namespace GreetingApi.Tests;
 
@@ -18,7 +20,8 @@ public class GreetingApiTests
     [Fact]
     public void RunContractTests()
     {
-        var config = new PactVerifierConfig {
+        var config = new PactVerifierConfig
+        {
             Outputters = new[] {
                 new XUnitOutput(output)
             }
@@ -27,7 +30,7 @@ public class GreetingApiTests
         // TODO: Tests would need to be provided the provider variables via env vars
         var providerVersion = "1.0.0";
         var providerBranch = "main";
-        
+
         var verifier = new PactVerifier(config);
         verifier
             .ServiceProvider("Greeting API", new Uri("http://localhost:5001"))

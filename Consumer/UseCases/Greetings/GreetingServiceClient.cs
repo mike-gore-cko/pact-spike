@@ -6,7 +6,7 @@ namespace Consumer.UseCases.Greetings;
 public class GreetingServiceClient
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-    
+
     private readonly HttpClient _client;
 
     public GreetingServiceClient(HttpClient client)
