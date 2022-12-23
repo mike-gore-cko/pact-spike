@@ -23,7 +23,7 @@ public class GreetingServiceClientTests
 
 
     [Fact]
-    public async Task Bob()
+    public async Task When_a_greeting_is_requested_it_is_returned_successfully()
     {        
         _pactBuilder
             .UponReceiving("A GET request to obtain the greeting")
