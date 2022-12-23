@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Consumer.UseCases.Greetings;
 
 using PactNet;
+using PactNet.Matchers;
 
 using Xunit;
 
@@ -23,7 +24,7 @@ public class GreetingServiceClientTests
 
     [Fact]
     public async Task Bob()
-    {
+    {        
         _pactBuilder
             .UponReceiving("A GET request to obtain the greeting")
                 .WithRequest(HttpMethod.Get, "/greeting")
@@ -33,7 +34,7 @@ public class GreetingServiceClientTests
                 .WithHeader("Content-Type", "application/json")
                 .WithJsonBody(new
                 {
-                    greeting = "Hello World"
+                    greeting = Match.Type("Hello there!")
                 });
 
         await _pactBuilder.VerifyAsync(async ctx =>
@@ -46,7 +47,7 @@ public class GreetingServiceClientTests
             var greeting = await client.GetGreeting();
 
             Assert.NotNull(greeting);
-            Assert.Equal("Hello World", greeting);
+            Assert.NotEmpty(greeting);
         });
     }
 }
